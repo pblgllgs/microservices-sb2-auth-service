@@ -12,10 +12,10 @@ admin-paths:
   paths:
     -
       uri: "/user"
-      methods: "POST"
+      method: "POST"
     -
       uri: "/user/saveCar/{1}[1-9]+[0-9]*"
-      methods: "POST"
+      method: "POST"
     -
       uri: "/user/saveBike/{1}[1-9]+[0-9]*"
-      methods: "POST"
+      method: "POST"
