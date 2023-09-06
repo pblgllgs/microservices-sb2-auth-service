@@ -1,6 +1,7 @@
 package com.pblgllgs.authservice.service;
 
 import com.pblgllgs.authservice.dto.AuthUserDto;
+import com.pblgllgs.authservice.dto.NewUserDto;
 import com.pblgllgs.authservice.dto.RequestDto;
 import com.pblgllgs.authservice.dto.TokenDto;
 import com.pblgllgs.authservice.entity.AuthUser;
@@ -23,16 +24,17 @@ public class AuthUserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
-    public AuthUser register(AuthUserDto authUserDto){
-        Optional<AuthUser> user = authUserRepository.findByUserName(authUserDto.getUserName());
+    public AuthUser register(NewUserDto newUserDto){
+        Optional<AuthUser> user = authUserRepository.findByUserName(newUserDto.getUserName());
         if (user.isPresent()){
-            throw new UserAlreadyExistsException("User with username "+ authUserDto.getUserName() +" already was registered");
+            throw new UserAlreadyExistsException("User with username "+ newUserDto.getUserName() +" already was registered");
         }
-        String password =  passwordEncoder.encode(authUserDto.getPassword());
+        String password =  passwordEncoder.encode(newUserDto.getPassword());
         AuthUser authUser = AuthUser
                 .builder()
-                .userName(authUserDto.getUserName())
+                .userName(newUserDto.getUserName())
                 .password(password)
+                .role(newUserDto.getRole())
                 .build();
         return authUserRepository.save(authUser);
     }

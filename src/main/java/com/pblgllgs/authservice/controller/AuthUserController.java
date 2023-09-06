@@ -1,6 +1,7 @@
 package com.pblgllgs.authservice.controller;
 
 import com.pblgllgs.authservice.dto.AuthUserDto;
+import com.pblgllgs.authservice.dto.NewUserDto;
 import com.pblgllgs.authservice.dto.RequestDto;
 import com.pblgllgs.authservice.dto.TokenDto;
 import com.pblgllgs.authservice.entity.AuthUser;
@@ -27,7 +28,7 @@ public class AuthUserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthUser> register(@RequestBody AuthUserDto authUserDto){
-        return new ResponseEntity<>(authUserService.register(authUserDto), HttpStatus.CREATED);
+    public ResponseEntity<AuthUser> register(@RequestBody NewUserDto newUserDto){
+        return new ResponseEntity<>(authUserService.register(newUserDto), HttpStatus.CREATED);
     }
 }

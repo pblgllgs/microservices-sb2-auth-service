@@ -19,10 +19,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtProvider {
 
+    private final RouteValidator routeValidator;
     @Value("${jwt.secret}")
     private String secret;
-
-    private final RouteValidator routeValidator;
 
     @PostConstruct
     protected void init() {
@@ -33,7 +32,7 @@ public class JwtProvider {
         Map<String, Object> claims = new HashMap<>();
         claims = Jwts.claims().setSubject(authUser.getUserName());
         claims.put("id", authUser.getId());
-        claims.put("role",authUser.getRole());
+        claims.put("role", authUser.getRole());
         Date now = new Date();
         Date exp = new Date(now.getTime() + 3600000);
         return Jwts
@@ -51,14 +50,10 @@ public class JwtProvider {
         } catch (Exception e) {
             return false;
         }
-        if (isAdmin(token) && routeValidator.isAdminPath(requestDto)){
-            return false;
-        }else{
-            return true;
-        }
+        return isAdmin(token) || !routeValidator.isAdminPath(requestDto);
     }
 
-    private boolean isAdmin(String token){
+    private boolean isAdmin(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("role").equals("admin");
     }
 
